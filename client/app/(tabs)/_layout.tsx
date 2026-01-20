@@ -2,7 +2,7 @@ import { View, Text } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 
-export default function _layout() {
+export default function MainTabLayout() {
   return (
     <Tabs>
       <Tabs.Screen
@@ -26,15 +26,6 @@ export default function _layout() {
           headerShown: false,
         }}
       />
-      <Tabs.Screen
-        name="InsideClass"
-        options={{
-          title: "Inside Class",
-          headerShown: false,
-        }}
-      />
-
-
     </Tabs>
   );
 }
