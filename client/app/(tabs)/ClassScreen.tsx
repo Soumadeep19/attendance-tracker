@@ -10,16 +10,7 @@ import React, { useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
-
-interface ClassItem {
-  id: string;
-  title: string;
-  teacher: string;
-  startTime: string;
-  endTime: string;
-  studentCount: number;
-}
-
+import { ClassItem } from "@/types/classes";
 export default function ClassScreen() {
   const [classes, setClasses] = React.useState<ClassItem[]>([]);
 
@@ -95,8 +86,14 @@ export default function ClassScreen() {
         data={classes}
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ padding: 20 }}
+        showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
+          <Pressable
+            onPress={() => router.push("/class-details/Announcements")}
+            className="mb-4"
+          >
           <View className="bg-card rounded-2xl p-4 mb-4 border border-border">
+
             {/* Title & Icon */}
             <View className="flex-row justify-between items-center">
               <View>
@@ -108,12 +105,12 @@ export default function ClassScreen() {
                 </Text>
               </View>
 
-              <View className="bg-accent p-2 rounded-full">
-                <Ionicons name="people" size={18} color="black" />
+              <Ionicons name="people-outline" size={20} color="black" />
               </View>
-            </View>
 
-            {/* Time & Students */}
+            
+            
+            {/* Time, Students & Arrow */}
             <View className="flex-row justify-between mt-4">
               <View className="flex-row items-center gap-2">
                 <Ionicons name="time-outline" size={16} color="black" />
@@ -128,8 +125,16 @@ export default function ClassScreen() {
                   {item.studentCount} Students
                 </Text>
               </View>
+
+               {/* Arrow Icon */}
+                <Ionicons
+                  name="arrow-forward-outline"
+                  size={18}
+                  color="black"
+                />
             </View>
           </View>
+           </Pressable>
         )}
       />
 
