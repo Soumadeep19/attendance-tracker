@@ -43,3 +43,23 @@ export const protectRoute = async (req, res, next) => {
     }
 
 }
+
+export const userIsTeacher = async (req, res, next) => {
+    try {
+
+        const user = req.user;
+
+        //check if user is teacher
+        if (user.role !== "TEACHER") {
+            return res.status(401).json({
+                message: "Unauthorized - Only teachers can access this route"
+            })
+        }
+        next();
+    } catch (error) {
+        console.log("Error in auth middleware: ", error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
+    }
+}

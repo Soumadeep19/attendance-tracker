@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import authRoutes from "./routes/auth.routes.js";
+import classRoutes from "./routes/class.routes.js";
 
 
 const port = process.env.PORT || 3000
@@ -18,6 +19,7 @@ app.use(express.urlencoded({
 }))
 
 app.use("/api/auth", authRoutes);
+app.use("/api/class", classRoutes);
 
 
 app.listen(port, () => {

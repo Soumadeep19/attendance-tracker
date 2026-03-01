@@ -28,6 +28,8 @@ CREATE TABLE "Classroom" (
     "classId" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "teacherId" TEXT NOT NULL,
+    "teacherName" TEXT NOT NULL,
+    "teacherProfilePic" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
