@@ -55,6 +55,9 @@ export const fetchClassForStudentService = async (studentId) => {
         select: {
             class: true
         }
-    })
-    return classes;
+    });
+
+    const mappedClasses = classes.map((item) => item.class)
+
+    return mappedClasses;
 }
