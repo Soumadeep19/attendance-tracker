@@ -99,6 +99,7 @@ export default function ClassScreen() {
 
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-background">
+
       {/* ---------- HEADER ---------- */}
       <View className="flex-row justify-between items-center px-5 pt-4">
         <Text className="text-2xl font-bold text-foreground">My Classes</Text>

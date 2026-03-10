@@ -30,9 +30,6 @@ const Login = () => {
           <Text className="mt-4 text-xl font-bold text-foreground">
             Donald Trump
           </Text>
-          <Text className="text-mutedForeground text-sm">
-            Student Login
-          </Text>
         </View>
 
         {/* Welcome Text */}
@@ -48,7 +45,7 @@ const Login = () => {
         {/* Email Input */}
         <View className="bg-card border border-border rounded-2xl px-4 py-4 mb-4">
           <TextInput
-            placeholder="Enter your email"
+            placeholder="Enter your Unique ID"
             placeholderTextColor="#6b7280"
             className="text-foreground text-base"
           />

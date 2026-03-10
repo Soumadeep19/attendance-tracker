@@ -34,6 +34,7 @@ const SignUp = () => {
         contentContainerStyle={{ padding: 24 }}
         showsVerticalScrollIndicator={false}
       >
+
         {/* Header */}
         <View className="items-center mt-6 mb-8">
           <View className="w-32 h-32 rounded-full bg-primary/15 items-center justify-center">
@@ -56,33 +57,6 @@ const SignUp = () => {
           />
         </View>
 
-        {/* Roll Number */}
-        <View className="bg-card border border-border rounded-2xl px-4 py-4 mb-4">
-          <TextInput
-            placeholder="University Roll Number"
-            placeholderTextColor="#6b7280"
-            className="text-foreground"
-          />
-        </View>
-
-        {/* Section */}
-        <View className="bg-card border border-border rounded-2xl px-4 py-4 mb-4">
-          <TextInput
-            placeholder="Section (A / B / C)"
-            placeholderTextColor="#6b7280"
-            className="text-foreground"
-          />
-        </View>
-
-        {/* Department Dropdown */}
-        <TouchableOpacity
-          className="bg-card border border-border rounded-2xl px-4 py-4 mb-4"
-          onPress={() => setDeptModal(true)}
-          activeOpacity={0.8}
-        >
-          <Text className="text-foreground">{department}</Text>
-        </TouchableOpacity>
-
         {/* Role Dropdown */}
         <TouchableOpacity
           className="bg-card border border-border rounded-2xl px-4 py-4 mb-4"
@@ -91,6 +65,63 @@ const SignUp = () => {
         >
           <Text className="text-foreground">{role}</Text>
         </TouchableOpacity>
+
+        {/* STUDENT FIELDS */}
+        {role === 'Student' && (
+          <>
+            {/* Roll Number */}
+            <View className="bg-card border border-border rounded-2xl px-4 py-4 mb-4">
+              <TextInput
+                placeholder="University Roll Number"
+                placeholderTextColor="#6b7280"
+                className="text-foreground"
+              />
+            </View>
+
+            {/* Section */}
+            <View className="bg-card border border-border rounded-2xl px-4 py-4 mb-4">
+              <TextInput
+                placeholder="Section (A / B / C)"
+                placeholderTextColor="#6b7280"
+                className="text-foreground"
+              />
+            </View>
+
+            {/* Department Dropdown */}
+            <TouchableOpacity
+              className="bg-card border border-border rounded-2xl px-4 py-4 mb-4"
+              onPress={() => setDeptModal(true)}
+              activeOpacity={0.8}
+            >
+              <Text className="text-foreground">{department}</Text>
+            </TouchableOpacity>
+          </>
+        )}
+
+        {/* TEACHER FIELDS */}
+        {/* TEACHER FIELDS */}
+{role === 'Teacher' && (
+  <>
+    {/* Institution / Employee ID */}
+    <View className="bg-card border border-border rounded-2xl px-4 py-4 mb-4">
+      <TextInput
+        placeholder="Institution / Employee ID"
+        placeholderTextColor="#6b7280"
+        className="text-foreground"
+      />
+    </View>
+
+    {/* Phone Number */}
+    <View className="bg-card border border-border rounded-2xl px-4 py-4 mb-4">
+      <TextInput
+        placeholder="Phone Number"
+        placeholderTextColor="#6b7280"
+        keyboardType="phone-pad"
+        className="text-foreground"
+      />
+    </View>
+  </>
+)}
 
         {/* Password */}
         <View className="bg-card border border-border rounded-2xl px-4 py-4 mb-3">
