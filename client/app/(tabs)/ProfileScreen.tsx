@@ -1,22 +1,31 @@
-import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
+import { logoutUser } from "@/redux/slice/authSlice";
+import { clearToken } from "@/services/tokenService";
+import { Redirect, router } from "expo-router";
+import { User } from "@/types/userType";
 
 /* ---------- Profile Screen ---------- */
 export default function ProfileScreen() {
+  const dispatch = useAppDispatch();
+  const isLoggedOut = useAppSelector((state) => state.auth.isLoggedOut);
+  const currentUser: User | null = useAppSelector(
+    (state) => state.auth.authUser,
+  );
+  const handleLogout = async () => {
+    await dispatch(logoutUser());
+
+    if (isLoggedOut) {
+      router.replace("/login");
+    }
+  };
+
   return (
-    <SafeAreaView className="flex-1 bg-background">
-      <ScrollView
-        className="flex-1 px-4"
-        showsVerticalScrollIndicator={false}
-      >
+    <SafeAreaView edges={["top"]} className="flex-1 bg-background">
+      <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View className="flex-row justify-between items-center mt-4 mb-6">
           <Text className="text-xl font-semibold text-foreground">
@@ -41,40 +50,24 @@ export default function ProfileScreen() {
 
           {/* User Info */}
           <Text className="text-lg font-semibold text-foreground mt-4">
-            Alex Johnson
+            {currentUser?.name}
           </Text>
 
           <Text className="text-sm text-mutedForeground">
-            Computer Science • Year 3
+            {currentUser?.department} • Year 3
           </Text>
 
           <Text className="text-xs text-mutedForeground mt-1">
-            ID: 2023-CS-042
+            ID: {currentUser?.institutionId}
           </Text>
         </View>
 
         {/* Stats Grid */}
         <View className="flex-row flex-wrap justify-center gap-4 mb-6">
-          <StatCard
-            icon="book-outline"
-            value="12"
-            label="Total Classes"
-          />
-          <StatCard
-            icon="trending-up-outline"
-            value="85%"
-            label="Attendance"
-          />
-          <StatCard
-            icon="time-outline"
-            value="142"
-            label="Hours"
-          />
-          <StatCard
-            icon="flame-outline"
-            value="15"
-            label="Day Streak"
-          />
+          <StatCard icon="book-outline" value="12" label="Total Classes" />
+          <StatCard icon="trending-up-outline" value="85%" label="Attendance" />
+          <StatCard icon="time-outline" value="142" label="Hours" />
+          <StatCard icon="flame-outline" value="15" label="Day Streak" />
         </View>
 
         {/* Edit Profile Button */}
@@ -84,6 +77,18 @@ export default function ProfileScreen() {
             <Text className="ml-3 text-foreground font-medium">
               Edit Profile
             </Text>
+          </View>
+
+          <Ionicons name="chevron-forward" size={20} color="#166534" />
+        </TouchableOpacity>
+        {/* Logout Button */}
+        <TouchableOpacity
+          onPress={handleLogout}
+          className="flex-row items-center justify-between bg-card px-5 py-4 rounded-2xl border border-border mb-10"
+        >
+          <View className="flex-row items-center">
+            <Ionicons name="log-out-outline" size={20} color="#166534" />
+            <Text className="ml-3 text-foreground font-medium">Logout</Text>
           </View>
 
           <Ionicons name="chevron-forward" size={20} color="#166534" />

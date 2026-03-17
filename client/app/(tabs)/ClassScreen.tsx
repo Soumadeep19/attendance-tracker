@@ -11,75 +11,91 @@ import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { ClassItem } from "@/types/classes";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
+import { fetchClassrooms } from "@/redux/slice/classroomSlice";
 export default function ClassScreen() {
   const [classes, setClasses] = useState<ClassItem[]>([]);
   const [isSearchEmpty, setIsSearchEmpty] = useState(true);
   const [searchParams, setSearchParams] = useState<string>();
   const [filteredClasses, setFilteredClasses] = useState<ClassItem[]>([]);
 
+  //redux states
+  const classrooms: ClassItem[] | null = useAppSelector(
+    (state) => state.classroom.classrooms,
+  );
+  const dispatch = useAppDispatch();
+
+  const handleFetchClassrooms = async () => {
+    setClasses(classrooms);
+  };
+
   useEffect(() => {
-    // Simulating backend / input data
-    setClasses([
-      {
-        id: "1",
-        title: "Digital Communication",
-        teacher: "Prof. Moumita Sengupta",
-        startTime: "10:00 AM",
-        endTime: "11:30 AM",
-        studentCount: 34,
-      },
-
-      {
-        id: "2",
-        title: "Applied Physics",
-        teacher: "Prof. James Miller",
-        startTime: "12:00 PM",
-        endTime: "01:30 PM",
-        studentCount: 28,
-      },
-
-      {
-        id: "3",
-        title: "Computer Science",
-        teacher: "Dr. Emily Chen",
-        startTime: "02:00 PM ",
-        endTime: "03:00 PM",
-        studentCount: 42,
-      },
-      {
-        id: "4",
-        title: "English Literature",
-        teacher: "Prof. Robert Brown",
-        startTime: "04:00 PM",
-        endTime: "05:30 PM",
-        studentCount: 64,
-      },
-      {
-        id: "5",
-        title: "Computer Science",
-        teacher: "Dr. Emily Chen",
-        startTime: "02:00 PM ",
-        endTime: "03:00 PM",
-        studentCount: 42,
-      },
-      {
-        id: "6",
-        title: "Advanced Mathematics",
-        teacher: "Dr. Sarah Wilson",
-        startTime: "10:00 AM",
-        endTime: "11:30 AM",
-        studentCount: 34,
-      },
-      {
-        id: "7",
-        title: "English Literature",
-        teacher: "Prof. Robert Brown",
-        startTime: "04:00 PM",
-        endTime: "05:30 PM",
-        studentCount: 64,
-      },
-    ]);
+    handleFetchClassrooms();
   }, []);
+
+  // useEffect(() => {
+  //   // Simulating backend / input data
+  //   setClasses([
+  //     {
+  //       id: "1",
+  //       title: "Digital Communication",
+  //       teacher: "Prof. Moumita Sengupta",
+  //       startTime: "10:00 AM",
+  //       endTime: "11:30 AM",
+  //       studentCount: 34,
+  //     },
+
+  //     {
+  //       id: "2",
+  //       title: "Applied Physics",
+  //       teacher: "Prof. James Miller",
+  //       startTime: "12:00 PM",
+  //       endTime: "01:30 PM",
+  //       studentCount: 28,
+  //     },
+
+  //     {
+  //       id: "3",
+  //       title: "Computer Science",
+  //       teacher: "Dr. Emily Chen",
+  //       startTime: "02:00 PM ",
+  //       endTime: "03:00 PM",
+  //       studentCount: 42,
+  //     },
+  //     {
+  //       id: "4",
+  //       title: "English Literature",
+  //       teacher: "Prof. Robert Brown",
+  //       startTime: "04:00 PM",
+  //       endTime: "05:30 PM",
+  //       studentCount: 64,
+  //     },
+  //     {
+  //       id: "5",
+  //       title: "Computer Science",
+  //       teacher: "Dr. Emily Chen",
+  //       startTime: "02:00 PM ",
+  //       endTime: "03:00 PM",
+  //       studentCount: 42,
+  //     },
+  //     {
+  //       id: "6",
+  //       title: "Advanced Mathematics",
+  //       teacher: "Dr. Sarah Wilson",
+  //       startTime: "10:00 AM",
+  //       endTime: "11:30 AM",
+  //       studentCount: 34,
+  //     },
+  //     {
+  //       id: "7",
+  //       title: "English Literature",
+  //       teacher: "Prof. Robert Brown",
+  //       startTime: "04:00 PM",
+  //       endTime: "05:30 PM",
+  //       studentCount: 64,
+  //     },
+  //   ]);
+  // }, []);
 
   const handleSearch = (text: string) => {
     //set search
@@ -90,7 +106,7 @@ export default function ClassScreen() {
 
     //search for classes
     const data: ClassItem[] = classes.filter((item) =>
-      item.title.toLowerCase().includes(text.toLowerCase()),
+      item.name.toLowerCase().includes(text.toLowerCase()),
     );
 
     //set filtered list
@@ -99,7 +115,6 @@ export default function ClassScreen() {
 
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-background">
-
       {/* ---------- HEADER ---------- */}
       <View className="flex-row justify-between items-center px-5 pt-4">
         <Text className="text-2xl font-bold text-foreground">My Classes</Text>
@@ -130,7 +145,7 @@ export default function ClassScreen() {
       <FlatList
         className="pt-2"
         data={isSearchEmpty ? classes : filteredClasses}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.classId}
         contentContainerStyle={{ padding: 20 }}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
@@ -139,8 +154,8 @@ export default function ClassScreen() {
               router.push({
                 pathname: `/[classID]/Announcements`,
                 params: {
-                  classID: item.id,
-                  className: item.title,
+                  classID: item.classId,
+                  className: item.name,
                 },
               })
             }
@@ -151,10 +166,10 @@ export default function ClassScreen() {
               <View className="flex-row justify-between items-center">
                 <View>
                   <Text className="text-lg font-bold text-foreground">
-                    {item.title}
+                    {item.name}
                   </Text>
                   <Text className="text-sm text-mutedForeground mt-1">
-                    {item.teacher}
+                    Prof. {item.teacherName}
                   </Text>
                 </View>
 
@@ -166,15 +181,16 @@ export default function ClassScreen() {
                 <View className="flex-row items-center gap-2">
                   <Ionicons name="time-outline" size={16} color="black" />
                   <Text className="text-sm text-foreground">
-                    {item.startTime} - {item.endTime}
+                    {new Date(item.createdAt).toDateString()}
                   </Text>
                 </View>
 
                 <View className="flex-row items-center gap-2">
                   <Ionicons name="people-outline" size={16} color="black" />
-                  <Text className="text-sm text-foreground">
-                    {item.studentCount} Students
-                  </Text>
+
+                  {/* Student count */}
+                  {/* TODO - TO be updated */}
+                  <Text className="text-sm text-foreground">100 Students</Text>
                 </View>
 
                 {/* Arrow Icon */}

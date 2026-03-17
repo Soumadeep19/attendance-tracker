@@ -25,8 +25,6 @@ const Login = () => {
       password: password,
     };
     const result = await dispatch(loginUser(data));
-
-    console.log("login: ", result);
   };
 
   return (

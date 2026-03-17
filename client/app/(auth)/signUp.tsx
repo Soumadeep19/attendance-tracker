@@ -9,6 +9,7 @@ import {
   Modal,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
 
 const departments = [
   "Computer Science (CSE)",
@@ -113,7 +114,7 @@ const SignUp = () => {
             {/* Phone Number */}
             <View className="bg-card border border-border rounded-2xl px-4 py-4 mb-4">
               <TextInput
-                placeholder="Phone Number"
+                placeholder="Department"
                 placeholderTextColor="#6b7280"
                 keyboardType="phone-pad"
                 className="text-foreground"
@@ -157,7 +158,12 @@ const SignUp = () => {
         <View className="items-center mt-8">
           <Text className="text-mutedForeground">
             Already have an account?{" "}
-            <Text className="text-primary font-semibold">Login</Text>
+            <Text
+              onPress={() => router.replace("/login")}
+              className="text-primary font-semibold"
+            >
+              Login
+            </Text>
           </Text>
         </View>
       </ScrollView>
@@ -189,7 +195,7 @@ const SignUp = () => {
             {roles.map((item, index) => (
               <TouchableOpacity
                 key={index}
-                className="py-4 border-b border-border"
+                className={`py-4 ${index === roles.length - 1 ? "" : "border-b border-border"}  `}
                 onPress={() => {
                   setRole(item);
                   setRoleModal(false);

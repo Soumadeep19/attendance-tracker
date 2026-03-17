@@ -1,5 +1,5 @@
 import { getToken } from "@/services/tokenService";
-import axios, { InternalAxiosRequestConfig } from "axios";
+import axios from "axios";
 
 export const axiosInstance = axios.create({
   baseURL: process.env.EXPO_PUBLIC_BACKEND_SERVER_URL,

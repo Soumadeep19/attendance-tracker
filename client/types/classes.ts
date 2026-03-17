@@ -1,8 +1,9 @@
 export interface ClassItem {
-  id: string;
-  title: string;
-  teacher: string;
-  startTime: string;
-  endTime: string;
-  studentCount: number;
+  classId: string;
+  name: string;
+  teacherId: string;
+  teacherName: string;
+  teacherProfilePic: string | null;
+  createdAt: string;
+  updatedAt: string;
 }

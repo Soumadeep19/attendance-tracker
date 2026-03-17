@@ -1,6 +1,7 @@
 import { axiosInstance } from "@/lib/axios";
-import { saveToken } from "@/services/tokenService";
+import { clearToken, saveToken } from "@/services/tokenService";
 import { loginData } from "@/types/authForms";
+import { User } from "@/types/userType";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 //api to check authentication
@@ -34,6 +35,7 @@ export const loginUser = createAsyncThunk(
       const response = await axiosInstance.post("/auth/login", data);
       //toast success
       await saveToken(response.data.jwt);
+      console.log("Login response", response.data);
       return response.data;
     } catch (error: any) {
       //toast error
@@ -45,12 +47,23 @@ export const loginUser = createAsyncThunk(
 //api to logout
 export const logoutUser = createAsyncThunk("user/logout", async () => {
   try {
-    const response = await axiosInstance.get("/auth/logout");
-    return response.data;
-  } catch (error) {}
+    await clearToken();
+    console.log("User logged out successfully");
+  } catch (error) {
+    console.log("Error in logout", error);
+  }
 });
 
-const initialState = {
+interface AuthState {
+  authUser: User | null;
+  isSigningUp: boolean;
+  isLoggingIn: boolean;
+  isLoggedOut: boolean;
+  isUpdatingProfile: boolean;
+  isCheckingAuth: boolean;
+}
+
+const initialState: AuthState = {
   authUser: null,
   isSigningUp: false,
   isLoggingIn: false,
@@ -70,7 +83,7 @@ const authSlice = createSlice({
     }),
       builder.addCase(checkAuth.fulfilled, (state, action) => {
         state.isCheckingAuth = false;
-        state.authUser = action.payload;
+        state.authUser = action.payload.user;
       }),
       builder.addCase(checkAuth.rejected, (state, action) => {
         state.isCheckingAuth = false;
@@ -95,7 +108,7 @@ const authSlice = createSlice({
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.isLoggingIn = false;
       state.isLoggedOut = false;
-      state.authUser = action.payload;
+      state.authUser = action.payload.user;
     });
     builder.addCase(loginUser.rejected, (state, action) => {
       state.isLoggingIn = false;

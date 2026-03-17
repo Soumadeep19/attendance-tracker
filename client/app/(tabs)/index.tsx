@@ -1,9 +1,22 @@
-import React from 'react';
-import '../global.css';
-import { View, Text, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useEffect } from "react";
+import "../global.css";
+import { View, Text, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
+import { fetchClassrooms } from "@/redux/slice/classroomSlice";
 
 const Index = () => {
+  const currentUser = useAppSelector((state) => state.auth.authUser);
+  const classCount = useAppSelector((state) => state.classroom.classCount);
+  const dispatch = useAppDispatch();
+  const handleClassFetch = async () => {
+    await dispatch(fetchClassrooms());
+  };
+
+  useEffect(() => {
+    handleClassFetch();
+  }, []);
+
   return (
     <SafeAreaView className="flex-1 bg-background">
       <ScrollView
@@ -14,10 +27,12 @@ const Index = () => {
         <View className="flex-row justify-between items-center mb-8">
           <View>
             <Text className="text-3xl font-extrabold text-foreground">
-              Hi, Donald Trump👋
+              Hi, {currentUser?.name}👋
             </Text>
             <Text className="text-mutedForeground mt-1 text-base">
-              You have 3 classes today
+              {currentUser?.role === "STUDENT"
+                ? `You are currently enrolled in ${classCount} classes`
+                : `You are currently assigned to ${classCount} classes`}
             </Text>
           </View>
 
@@ -41,7 +56,7 @@ const Index = () => {
           {/* Total Classes */}
           <View className="w-[48%] bg-card p-5 rounded-2xl border border-border shadow-sm">
             <Text className="text-4xl font-extrabold text-foreground">
-              12
+              {classCount}
             </Text>
             <Text className="text-mutedForeground mt-1 text-sm">
               Total Classes
@@ -51,12 +66,8 @@ const Index = () => {
 
         {/* Up Next */}
         <View className="flex-row justify-between items-center mb-3">
-          <Text className="text-xl font-bold text-foreground">
-            Up Next
-          </Text>
-          <Text className="text-primary font-semibold">
-            See All
-          </Text>
+          <Text className="text-xl font-bold text-foreground">Up Next</Text>
+          <Text className="text-primary font-semibold">See All</Text>
         </View>
 
         <View className="bg-card p-6 rounded-2xl border border-border shadow-sm mb-8">
@@ -68,12 +79,8 @@ const Index = () => {
           </Text>
 
           <View className="flex-row justify-between mt-4">
-            <Text className="text-foreground">
-              ⏰ 10:00 AM - 11:30 AM
-            </Text>
-            <Text className="text-foreground">
-              👥 34 Students
-            </Text>
+            <Text className="text-foreground">⏰ 10:00 AM - 11:30 AM</Text>
+            <Text className="text-foreground">👥 34 Students</Text>
           </View>
         </View>
 
@@ -93,9 +100,7 @@ const Index = () => {
           </View>
 
           <View className="bg-primary/10 px-3 py-1 rounded-full">
-            <Text className="text-primary font-semibold">
-              On Time
-            </Text>
+            <Text className="text-primary font-semibold">On Time</Text>
           </View>
         </View>
       </ScrollView>
